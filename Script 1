@@ -1,0 +1,86 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/main/source')))()
+
+local Window = Zephyr script({Name = "Test", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+--[[
+Name = <string> - The name of the UI.
+HidePremium = <bool> - Whether or not the user details shows Premium status or not.
+SaveConfig = <bool> - Toggles the config saving in the UI.
+ConfigFolder = <test> - The name of the folder where the configs are saved.
+IntroEnabled = <bool> - Whether or not to show the intro animation.
+IntroText = <string> - Text to show in the intro animation.
+IntroIcon = <string> - URL to the image you want to use in the intro animation.
+Icon = <string> - URL to the image you want displayed on the window.
+CloseCallback = <function> - Function to execute when the window is closed.
+]]
+
+local Tab = Window:MakeTab({
+	Name = "Tab 1",
+	Icon = "rbxassetid://nil",
+	PremiumOnly = false
+})
+
+--[[
+Name = <home> - The name of the tab.
+Icon = <🏠> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+local Section = Tab:script({
+	Name = "Section"
+})
+
+--[[
+Name = <test> - The name of the section.
+]]
+
+Tab:Add({
+	Name = "Button!",
+	Callback = function()
+      		print("button pressed")
+  	end    
+})
+
+--[[
+
+Tab:AddButton({
+	Name = "damageboost!",
+	Callback = function()
+      		--// UNIVERSAL BOOST VALUES
+local DAMAGE_MULTIPLIER = 999999999999999  -- same for everyone
+local EXP_MULTIPLIER    = 999999999999999  -- same for everyone
+local GODMODE_ENABLED   = true             -- toggle on/off
+
+--// Apply EXP Multipliers
+_G.GiveExp = function(player, baseExp)
+	local finalExp = baseExp * EXP_MULTIPLIER
+	return finalExp
+end
+
+--// Apply Damage Multipliers
+_G.ApplyDamage = function(attackerPlayer, baseDamage)
+	local finalDamage = baseDamage * DAMAGE_MULTIPLIER
+	return finalDamage
+end
+
+--// Godmode Handler
+game.Players.PlayerAdded:Connect(function(player)
+	player.CharacterAdded:Connect(function(char)
+		local hum = char:WaitForChild("Humanoid")
+
+		if GODMODE_ENABLED then
+			hum.MaxHealth = math.huge     -- infinite HP
+			hum.Health = math.huge
+			hum:GetPropertyChangedSignal("Health"):Connect(function()
+				if hum.Health < hum.MaxHealth then
+					hum.Health = hum.MaxHealth -- auto-refill
+				end
+			end)
+		end
+	end)
+end)
+
+  	end    
+})
+
+OrionLib:Init()
